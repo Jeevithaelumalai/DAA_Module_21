@@ -1,94 +1,94 @@
 # EX 3B Hamiltonian Circuit Problem
-## DATE:11/04/2025
-## AIM:
+
+## DATE :29/04/2025
+
+## AIM :
+
 To write a python program to check whether Hamiltonian path exits in the given graph.
 
-## Algorithm
-1.Represent the graph using an adjacency matrix.
+## Algorithm :
 
-2.Start from the first vertex and create a recursive utility function to check paths.
+1.Start with a path list, which keeps track of the order of visited vertices.
 
-3.At each step, check if the next vertex is adjacent and not already visited.
+2.Initialize the first position in the path to vertex 0.
 
-4.If all vertices are visited and there's a path back to the start (for a circuit), a Hamiltonian Circuit exists.
+3.Use a recursive helper function (hamUtil) to build the path one vertex at a time.
 
-5.If all vertices are visited and no path back to the start, it's only a Hamiltonian Path. 
-   
+4.Try every possible vertex as the next move.
 
-## Program:
+5.For each vertex v, check if it's a valid move.
+
+6.It must be connected to the previous vertex (adj[path[pos-1]][v] == 1).
+
+7.It must not have been visited before (v not in path).
+
+8.If a vertex is valid:Place it in the path.
+
+9.Move to the next position (pos+1) and continue recursively.
+
+10.If you reach a position equal to the number of vertices (pos == N):
+
+11.You’ve found a valid Hamiltonian Path — return True.
+
+12.If no valid path is found from a position, backtrack:
+
+13.Remove the vertex from the path (path[pos] = -1) and try the next one.
+
+14.If the recursion completes and no path is found, return False.
+
+## Program :
+
+### Developed by: JEEVITHA E
+### Register Number: 212222230054
+
 ```
-/*
-global N
-N = int(input())
- 
-def printSolution(board):
-    for i in range(N):
-        for j in range(N):
-            print(board[i][j], end = " ")
-        print()
- 
-def isSafe(board, row, col):
- 
-    # Check this row on left side
-    for i in range(col):
-        if board[row][i] == 1:
-            return False
- 
-    # Check upper diagonal on left side
-    for i, j in zip(range(row, -1, -1),
-                    range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
- 
-    # Check lower diagonal on left side
-    for i, j in zip(range(row, N, 1),
-                    range(col, -1, -1)):
-        if board[i][j] == 1:
-            return False
- 
-    return True
- 
-def solveNQUtil(board, col):
-    if col>=N:
-        return True
-        
-    for row in range(N):
-        if isSafe(board,row,col):
-            board[row][col]=1
-            if solveNQUtil(board, col+1):
-                return True
-            board[row][col]=0
-    return False
+def is_valid(v,pos,path,adj,N):
     
-def solveNQ():
-    board = [ [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0],
-              [0, 0, 0, 0, 0, 0, 0, 0]]
- 
-    if solveNQUtil(board, 0) == False:
-        print ("Solution does not exist")
+    if adj[path[pos-1]][v]==0:
         return False
- 
-    printSolution(board)
+    if v in path:
+        return False
     return True
- 
-# Driver Code
-solveNQ()
+    
+def hamUtil(adj,path,pos,N):
+    if pos==N:
+        return True
+    for v in range(N):
+        if is_valid(v,pos,path,adj,N):
+            path[pos]=v
+            if hamUtil(adj,path,pos+1,N):
+                return True
+            path[pos]=-1
+            
+def Hamiltonian_path(adj, N):
+    path=[-1]*N
+    path[0]=0
 
-Developed by: Jeevitha E
-Register Number:212222230054  
-*/
+    if hamUtil(adj,path,1,N) == False:
+        print ("Solution does not exist\n")
+        return False
+
+    # printSolution(path)
+    return True
+    
+adj = [ [ 0, 1, 1, 1, 0 ] ,
+        [ 1, 0, 1, 0, 1 ],
+        [ 1, 1, 0, 1, 1 ],
+        [ 1, 0, 1, 0, 0 ] ]
+ 
+N = len(adj)
+ 
+if (Hamiltonian_path(adj, N)):
+    print("YES")
+else:
+    print("NO")
 ```
 
-## Output:
+## Output :
 
-![image](https://github.com/user-attachments/assets/a838bb58-575e-48e1-aa28-48be3af31c7d)
+![image](https://github.com/user-attachments/assets/d0fd1dfb-a52f-4d59-8595-a98c3a3cf8c8)
 
 
-## Result:
+## Result :
+
 The Hamiltonian path program executed successfully, and it determined whether a Hamiltonian path exists in the given graph.
